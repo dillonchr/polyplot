@@ -6,8 +6,10 @@
             concat: {
                 dev: {
                     src: [
-                        'bower/angular/angular.js',
-                        'bower/lodash/lodash.js',
+                        'bower/angular/angular.min.js',
+                        'bower/angular-route/angular-route.min.js',
+                        'bower/lodash/lodash.min.js',
+                        'components/core/PolyPlot.js',
                         'components/**/*.js'
                     ],
                     dest: 'dist/<%= pkg.name %>-combined.js',
@@ -62,6 +64,7 @@
                 },
                 html: {
                     files: [
+                        'index.html',
                         'components/{,*/}*.html'
                     ],
                     tasks: [

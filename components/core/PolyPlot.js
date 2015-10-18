@@ -1,5 +1,5 @@
 (function() {
     'use strict';
 
-    angular.module('PolyPlot', []);
+    angular.module('PolyPlot', ['ngRoute']);
 }());
