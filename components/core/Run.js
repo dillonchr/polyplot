@@ -11,7 +11,7 @@
             };
 
             var script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_API_KEY + '&callback=' + googleInitCallbackName;
+            script.src = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + GOOGLE_API_KEY + '&callback=' + googleInitCallbackName;
             document.head.appendChild(script);
 
             $rootScope.googleMaps = deferred.promise;
