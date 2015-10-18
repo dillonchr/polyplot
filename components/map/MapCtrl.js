@@ -2,17 +2,13 @@
     'use strict';
 
     angular.module('PolyPlot')
-        .controller('MapCtrl', function($scope) {
-            var service;
+        .controller('MapCtrl', function($scope, GoogleMaps) {
             var markers = [];
-            
-            $scope.googleMaps.then(function() {
-                $scope.map = new google.maps.Map(document.getElementById('map-container'), {
-                    center: {lat: -34.397, lng: 150.644},
-                    zoom: 15
-                });
-                
-                service = new google.maps.places.PlacesService($scope.map);
+
+            GoogleMaps.api.then(function(api) {
+
+
+                $scope.map = GoogleMaps.createMap(document.getElementById('map-container'));
 
                 navigator.geolocation.getCurrentPosition(function(position) {
                     $scope.currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -22,33 +18,27 @@
             });
             
             function searchPlaces() {
-                service.nearbySearch({
-                    location: $scope.currentLocation,
-                    radius: '10000',
-                    keyword: 'thrift store'
-                }, onSearchResults);
+                GoogleMaps.searchPlaces($scope.map, 'thrift stores')
+                    .then(onSearchResults);
             }
         
 
-            function onSearchResults(results, status) {
-                if (status == google.maps.places.PlacesServiceStatus.OK) {
+            function onSearchResults(results) {
+                var i = results.length;
+                var bounds = new google.maps.LatLngBounds();
 
-                    var i = results.length;
-                    var bounds = new google.maps.LatLngBounds();
+                while(i--) {
 
-                    while(i--) {
+                    var place = results[i];
+                    markers.push(new google.maps.Marker({
+                        position: place.geometry.location,
+                        map: $scope.map
+                    }));
+                    bounds.extend(place.geometry.location);
 
-                        var place = results[i];
-                        markers.push(new google.maps.Marker({
-                            position: place.geometry.location,
-                            map: $scope.map
-                        }));
-                        bounds.extend(place.geometry.location);
-
-                    }
-
-                    $scope.map.fitBounds(bounds);
                 }
+
+                $scope.map.fitBounds(bounds);
             }
         });
 }());
