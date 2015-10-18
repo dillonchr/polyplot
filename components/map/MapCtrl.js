@@ -2,49 +2,63 @@
     'use strict';
 
     angular.module('PolyPlot')
-        .controller('MapCtrl', function($scope, GoogleMaps, $q) {
+        .controller('MapCtrl', function($scope, GoogleMaps, $q, $window) {
             var markers = [];
 
-            GoogleMaps.api.then(function(api) {
+            function getLastLocation() {
+                var lastLocation = $window.localStorage.getItem('lastLocation');
+                if(lastLocation) {
+                    return JSON.parse(lastLocation);
+                }
+            }
 
+            GoogleMaps.api.then(function() {
+                var lastLocation = getLastLocation();
+                $scope.map = GoogleMaps.createMap(document.getElementById('map-container'), lastLocation);
 
-                $scope.map = GoogleMaps.createMap(document.getElementById('map-container'));
+                if(lastLocation) {
+                    searchPlaces();
+                }
 
                 navigator.geolocation.getCurrentPosition(function(position) {
+                    $window.localStorage.setItem('lastLocation', JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
                     $scope.currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    $scope.map.setCenter($scope.currentLocation);
-                    searchPlaces();
+
+                    if(!$scope.map.getBounds().contains($scope.currentLocation)) {
+                        $scope.map.setCenter($scope.currentLocation);
+                        searchPlaces();
+                    }
                 });
             });
             
             function searchPlaces() {
                 $q.all([
-                GoogleMaps.searchPlaces($scope.map, 'thrift store')
+                GoogleMaps.searchPlaces('thrift store')
                     .then(function onSearchResults(results) {
                         var i = results.length;
                         while(i--) {
                             var place = results[i];
-                            markers.push(GoogleMaps.addMarker(place, $scope.map, 'E72C7E'));
+                            markers.push(GoogleMaps.addMarker(place, 'E72C7E'));
                         }
                         return results;
                     }),
 
-                GoogleMaps.searchPlaces($scope.map, 'antique mall')
+                GoogleMaps.searchPlaces('antique mall')
                     .then(function onSearchResults(results) {
                         var i = results.length;
                         while(i--) {
                             var place = results[i];
-                            markers.push(GoogleMaps.addMarker(place, $scope.map, 'C0FFEE'));
+                            markers.push(GoogleMaps.addMarker(place, 'C0FFEE'));
                         }
                         return results;
                     }),
 
-                GoogleMaps.searchPlaces($scope.map, 'book store')
+                GoogleMaps.searchPlaces('book store')
                     .then(function onSearchResults(results) {
                         var i = results.length;
                         while(i--) {
                             var place = results[i];
-                            markers.push(GoogleMaps.addMarker(place, $scope.map, 'FCB040'));
+                            markers.push(GoogleMaps.addMarker(place, 'FCB040'));
                         }
                         return results;
                     })

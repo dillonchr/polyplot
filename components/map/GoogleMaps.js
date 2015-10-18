@@ -18,21 +18,24 @@
 
             this.api = googleMapsDeferred.promise;
 
+            var currentMap;
+            var currentPlaceService;
+
             this.createMap = function(element, center) {
-                var map = new google.maps.Map(element, {
+                currentMap = new google.maps.Map(element, {
                     center: center || {lat: -34.397, lng: 150.644},
                     zoom: 15
                 });
 
-                map.placeService = new google.maps.places.PlacesService(map);
-                return map;
+                currentPlaceService = new google.maps.places.PlacesService(currentMap);
+                return currentMap;
             };
 
-            this.searchPlaces = function(map, search, radius) {
+            this.searchPlaces = function(search, radius) {
                 var deferred = $q.defer();
 
-                map.placeService.nearbySearch({
-                    location: map.getCenter(),
+                currentPlaceService.nearbySearch({
+                    location: currentMap.getCenter(),
                     radius: radius * 1000 || 10000,
                     keyword: search
                 }, function onSearchResults(results, status) {
@@ -45,14 +48,12 @@
                 return deferred.promise;
             };
 
-            this.addMarker = function(place, map, color) {
-                var marker = new google.maps.Marker({
+            this.addMarker = function(place, color) {
+                return new google.maps.Marker({
                     position: place.geometry.location,
-                    map: map,
+                    map: currentMap,
                     icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + color
                 });
-
-                return marker;
             };
         });
 }());
