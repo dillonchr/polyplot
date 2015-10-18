@@ -44,5 +44,15 @@
 
                 return deferred.promise;
             };
+
+            this.addMarker = function(place, map, color) {
+                var marker = new google.maps.Marker({
+                    position: place.geometry.location,
+                    map: map,
+                    icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + color
+                });
+
+                return marker;
+            };
         });
 }());

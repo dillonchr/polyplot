@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('PolyPlot')
-        .controller('MapCtrl', function($scope, GoogleMaps) {
+        .controller('MapCtrl', function($scope, GoogleMaps, $q) {
             var markers = [];
 
             GoogleMaps.api.then(function(api) {
@@ -18,8 +18,46 @@
             });
             
             function searchPlaces() {
-                GoogleMaps.searchPlaces($scope.map, 'thrift stores')
-                    .then(onSearchResults);
+                $q.all([
+                GoogleMaps.searchPlaces($scope.map, 'thrift store')
+                    .then(function onSearchResults(results) {
+                        var i = results.length;
+                        while(i--) {
+                            var place = results[i];
+                            markers.push(GoogleMaps.addMarker(place, $scope.map, 'E72C7E'));
+                        }
+                        return results;
+                    }),
+
+                GoogleMaps.searchPlaces($scope.map, 'antique mall')
+                    .then(function onSearchResults(results) {
+                        var i = results.length;
+                        while(i--) {
+                            var place = results[i];
+                            markers.push(GoogleMaps.addMarker(place, $scope.map, 'C0FFEE'));
+                        }
+                        return results;
+                    }),
+
+                GoogleMaps.searchPlaces($scope.map, 'book store')
+                    .then(function onSearchResults(results) {
+                        var i = results.length;
+                        while(i--) {
+                            var place = results[i];
+                            markers.push(GoogleMaps.addMarker(place, $scope.map, 'FCB040'));
+                        }
+                        return results;
+                    })
+                    ])
+                .then(function(results) {
+                        var bounds = new google.maps.LatLngBounds();
+                        results.forEach(function(places) {
+                            places.forEach(function(place) {
+                                bounds.extend(place.geometry.location);
+                            });
+                        });
+                        $scope.map.fitBounds(bounds);
+                    });
             }
         
 
@@ -30,10 +68,7 @@
                 while(i--) {
 
                     var place = results[i];
-                    markers.push(new google.maps.Marker({
-                        position: place.geometry.location,
-                        map: $scope.map
-                    }));
+                    markers.push(GoogleMaps.createMarker(place, 'E72C7E'));
                     bounds.extend(place.geometry.location);
 
                 }
