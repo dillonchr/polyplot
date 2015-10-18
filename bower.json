@@ -1,0 +1,24 @@
+{
+  "name": "arex",
+  "version": "0.0.0",
+  "authors": [
+    "Dillon Christensen <dillon.christensen@kailbrate.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.4.7",
+    "bootstrap": "~3.3.5",
+    "lodash": "~3.10.1"
+  }
+}
