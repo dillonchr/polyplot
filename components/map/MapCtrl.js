@@ -3,8 +3,7 @@
 
     angular.module('PolyPlot')
         .controller('MapCtrl', function($scope, GoogleMaps, $q, $window) {
-            var markers = [];
-
+            
             function getLastLocation() {
                 var lastLocation = $window.localStorage.getItem('lastLocation');
                 if(lastLocation) {
@@ -55,22 +54,6 @@
                         });
                         $scope.map.fitBounds(bounds);
                     });
-            }
-        
-
-            function onSearchResults(results) {
-                var i = results.length;
-                var bounds = new google.maps.LatLngBounds();
-
-                while(i--) {
-
-                    var place = results[i];
-                    markers.push(GoogleMaps.createMarker(place, 'E72C7E'));
-                    bounds.extend(place.geometry.location);
-
-                }
-
-                $scope.map.fitBounds(bounds);
             }
         });
 }());
