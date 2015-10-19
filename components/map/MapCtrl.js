@@ -24,7 +24,7 @@
                     $window.localStorage.setItem('lastLocation', JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
                     $scope.currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-                    if(!$scope.map.getBounds().contains($scope.currentLocation)) {
+                    if($scope.map.getBounds() && !$scope.map.getBounds().contains($scope.currentLocation)) {
                         $scope.map.setCenter($scope.currentLocation);
                         searchPlaces();
                     }
@@ -32,38 +32,21 @@
             });
             
             function searchPlaces() {
-                $q.all([
-                GoogleMaps.searchPlaces('thrift store')
-                    .then(function onSearchResults(results) {
-                        var i = results.length;
-                        while(i--) {
-                            var place = results[i];
-                            markers.push(GoogleMaps.addMarker(place, 'E72C7E'));
-                        }
-                        return results;
-                    }),
-
-                GoogleMaps.searchPlaces('antique mall')
-                    .then(function onSearchResults(results) {
-                        var i = results.length;
-                        while(i--) {
-                            var place = results[i];
-                            markers.push(GoogleMaps.addMarker(place, 'C0FFEE'));
-                        }
-                        return results;
-                    }),
-
-                GoogleMaps.searchPlaces('book store')
-                    .then(function onSearchResults(results) {
-                        var i = results.length;
-                        while(i--) {
-                            var place = results[i];
-                            markers.push(GoogleMaps.addMarker(place, 'FCB040'));
-                        }
-                        return results;
-                    })
-                    ])
-                .then(function(results) {
+                GoogleMaps.searchPlaces([
+                    {
+                        query: 'thrift store',
+                        color: 'E72C7E'
+                    },
+                    {
+                        query: 'antique mall',
+                        color: 'C0FFEE'
+                    },
+                    {
+                        query: 'book store',
+                        color: 'FCB040'
+                    }
+                ])
+                    .then(function(results) {
                         var bounds = new google.maps.LatLngBounds();
                         results.forEach(function(places) {
                             places.forEach(function(place) {

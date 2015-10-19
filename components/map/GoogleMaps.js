@@ -31,7 +31,7 @@
                 return currentMap;
             };
 
-            this.searchPlaces = function(search, radius) {
+            function _searchPlces(search, radius) {
                 var deferred = $q.defer();
 
                 currentPlaceService.nearbySearch({
@@ -46,13 +46,36 @@
                 });
 
                 return deferred.promise;
+            }
+
+            var markers = [];
+
+            this.searchPlaces = function(search, radius) {
+                var self = this;
+
+                return $q.all(search.map(function(search) {
+                    return _searchPlces(search.query, radius)
+                        .then(function(results) {
+                            var i = results.length;
+
+                            while(i--) {
+                                var place = results[i];
+                                markers.push(self.addMarker(place, search.color));
+                            }
+                            return results;
+                        });
+                }));
+
+
+
             };
 
             this.addMarker = function(place, color) {
                 return new google.maps.Marker({
                     position: place.geometry.location,
                     map: currentMap,
-                    icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + color
+                    icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + color,
+                    title: place.name
                 });
             };
         });
