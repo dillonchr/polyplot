@@ -10,7 +10,8 @@
                         'bower/angular-route/angular-route.min.js',
                         'bower/lodash/lodash.min.js',
                         'components/core/PolyPlot.js',
-                        'components/**/*.js'
+                        'components/**/*.js',
+                        'dist/templates.js'
                     ],
                     dest: 'dist/<%= pkg.name %>-combined.js',
                     options: {

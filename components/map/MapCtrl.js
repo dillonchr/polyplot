@@ -2,17 +2,10 @@
     'use strict';
 
     angular.module('PolyPlot')
-        .controller('MapCtrl', function($scope, GoogleMaps, $q, $window) {
-            
-            function getLastLocation() {
-                var lastLocation = $window.localStorage.getItem('lastLocation');
-                if(lastLocation) {
-                    return JSON.parse(lastLocation);
-                }
-            }
+        .controller('MapCtrl', function($scope, GoogleMaps, $q, Storage) {
 
             GoogleMaps.api.then(function() {
-                var lastLocation = getLastLocation();
+                var lastLocation = Storage.get('lastLocation');
                 $scope.map = GoogleMaps.createMap(document.getElementById('map-container'), lastLocation);
 
                 if(lastLocation) {
@@ -20,8 +13,9 @@
                 }
 
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    $window.localStorage.setItem('lastLocation', JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
+                    Storage.set('lastLocation', {lat: position.coords.latitude, lng: position.coords.longitude});
                     $scope.currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    GoogleMaps.addMarker($scope.currentLocation, '61DC83');
 
                     if($scope.map.getBounds() && !$scope.map.getBounds().contains($scope.currentLocation)) {
                         $scope.map.setCenter($scope.currentLocation);
