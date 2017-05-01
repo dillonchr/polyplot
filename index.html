@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <!--    bower components: css -->
-    <link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="dist/app.min.css">
-
     <meta charset="UTF-8">
     <title>Polyplot</title>
+    <link rel="stylesheet" href="polyplot.min.css">
 </head>
 <body>
+<div class="search">
 
-<section ng-app="PolyPlot" ng-view></section>
+</div>
+<div class="map">
 
-<script src="dist/PolyPlot-combined.js"></script>
-
+</div>
+<script src="polyplot.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCaMRWqlcMu96wUqotTCAwxNXPIH8Rif6c&callback=googleMapsOnReady"></script>
 </body>
 </html>
