@@ -13,7 +13,7 @@
     "js": "webpack main.js polyplot.min.js",
     "sass": "node-sass --output-style compressed main.scss polyplot.min.css",
     "start": "start npm run watchjs & start npm run watchsass & npm run serve",
-    "serve": "browser-sync start --server --files *.html,*.css",
+    "serve": "browser-sync start --server --files *.html,*.css,*.js",
     "watchjs": "webpack -w main.js polyplot.min.js",
     "watchsass": "node-sass --output-style compressed -w main.scss polyplot.min.css",
     "test": "echo \"Error: no test specified\" && exit 1"
