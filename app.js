@@ -1,4 +1,4 @@
-const currentLocation = require('./components/utils/current-location');
+const currentLocation = require('./utils/current-location');
 const mapFactory = require('./map/map');
 
 module.exports = {
