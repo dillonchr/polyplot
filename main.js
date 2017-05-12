@@ -17,8 +17,16 @@ window['googleMapsOnReady'] = function () {
         .then(coords => {
             map = app.createMap(coords);
             let marker = new google.maps.Marker({
-                position: coords,
-                map: map
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: 'powderblue',
+                    fillOpacity: 1,
+                    strokeColor: 'dodgerblue',
+                    strokeWeight: 2,
+                    scale: 5
+                },
+                map: map,
+                position: coords
             });
         });
 };
@@ -27,6 +35,14 @@ function addMarkersForSearchResults(results) {
     return results
         .map(r => {
             return new google.maps.Marker({
+                icon: {
+                    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                    fillColor: 'red',
+                    fillOpacity: 0.7,
+                    strokeColor: 'crimson',
+                    strokeWeight: 2,
+                    scale: 3
+                },
                 map: map,
                 position: r.geometry.location
             });
