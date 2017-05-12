@@ -1,9 +1,13 @@
-module.exports = new Promise((resolve, reject) => {
+module.exports = new Promise((resolve, ignore) => {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(pos => {
             resolve({lat: pos.coords.latitude, lng: pos.coords.longitude});
-        }, () => reject({reason: 'Not permitted access to location'}));
+        }, () => {
+            resolve(null);
+            console.error('CURRENT_LOCATION: Not permitted access to location');
+        });
     } else {
-        reject({reason: 'Unsupported in current browser'});
+        resolve(null);
+        console.error('CURRENT_LOCATION: Unsupported in current browser');
     }
 });
