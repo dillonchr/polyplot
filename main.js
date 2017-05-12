@@ -23,6 +23,16 @@ window['googleMapsOnReady'] = function () {
         });
 };
 
+function addMarkersForSearchResults(results) {
+    return results
+        .map(r => {
+            return new google.maps.Marker({
+                map: map,
+                position: r.geometry.location
+            });
+        });
+}
+
 window['searchPlaces'] = function (form) {
     let service = new google.maps.places.PlacesService(map);
     service.nearbySearch({
@@ -30,7 +40,8 @@ window['searchPlaces'] = function (form) {
         keyword: form.querySelectorAll('.search__input').value
     }, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            console.log(results);
+            let markers = addMarkersForSearchResults(results);
+            console.log('search results markerd', markers);
         } else {
             console.error('failed', results, status);
         }
