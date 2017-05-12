@@ -16,12 +16,19 @@
     "serve": "browser-sync start --server --files index.html,polyplot.min.css,polyplot.min.js",
     "watchjs": "webpack -w main.js polyplot.min.js",
     "watchsass": "node-sass --output-style compressed -w main.scss polyplot.min.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start --log-level debug --single-run"
   },
   "repository": {
     "type": "git",
     "url": "ssh://git@bitbucket.org/dillonchr/arex.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine-core": "^2.6.1",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-webpack": "^2.0.3"
+  }
 }
