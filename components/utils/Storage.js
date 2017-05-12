@@ -1,30 +1,25 @@
-(function() {
-    'use strict';
+const STORAGE_KEY = 'PolyPlotDataStore';
+let _storage;
 
-    angular.module('PolyPlot')
-        .service('Storage', function($window) {
-            var STORAGE_KEY = 'PolyPlotDataStore';
-            var _storage;
-
-            function getStorage() {
-                if(!_storage) {
-                    var data = $window.localStorage.getItem(STORAGE_KEY);
-                    _storage = !!data ? angular.fromJson(data) : {};
-                }
-                return _storage;
+module.exports = {
+    getStorage() {
+        if (!_storage) {
+            try {
+                _storage = JSON.parse(window.localStorage.getItem(STORAGE_KEY));
+            } catch (ignore) {
+                _storage = {};
             }
-
-            this.get = function(key, defaultValue) {
-                return getStorage()[key] || defaultValue;
-            };
-
-            this.set = function(key, value) {
-                getStorage()[key] = value;
-                this.save();
-            };
-
-            this.save = function() {
-                $window.localStorage.setItem(STORAGE_KEY, angular.toJson(getStorage()));
-            };
-        });
-}());
+        }
+        return _storage;
+    },
+    get(key, defaultValue) {
+        return this.getStorage()[key] || defaultValue;
+    },
+    set(key, value) {
+        this.getStorage()[key] = value;
+        this.save();
+    },
+    save() {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.getStorage()));
+    }
+};
