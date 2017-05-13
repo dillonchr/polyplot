@@ -1,6 +1,10 @@
-let app = require('../app');
-
 describe('app', () => {
+    let app;
+
+    beforeEach(() => {
+        app = require('../app')();
+    });
+
     it('should get the app', () => {
         expect(app).toBeDefined();
     });

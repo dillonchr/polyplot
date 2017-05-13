@@ -1,5 +1,5 @@
 module.exports = new Promise((resolve, ignore) => {
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(pos => {
             resolve({lat: pos.coords.latitude, lng: pos.coords.longitude});
         }, () => {
