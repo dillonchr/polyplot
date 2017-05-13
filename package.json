@@ -14,7 +14,7 @@
     "sass": "node-sass --output-style compressed main.scss polyplot.min.css",
     "start": "start npm run watchjs & start npm run watchsass & npm run serve",
     "serve": "browser-sync start --server --files index.html,polyplot.min.css,polyplot.min.js",
-    "watchjs": "webpack -w main.js polyplot.min.js",
+    "watchjs": "webpack -d -w main.js polyplot.min.js",
     "watchsass": "node-sass --output-style compressed -w main.scss polyplot.min.css",
     "test": "karma start --log-level debug --single-run"
   },
