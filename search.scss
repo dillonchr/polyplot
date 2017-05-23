@@ -1,0 +1,11 @@
+.search {
+  bottom: 2em;
+  left: 2em;
+  position: fixed;
+  z-index: 2;
+
+  &__input {
+    padding: 0.5em;
+    width: 250px;
+  }
+}
